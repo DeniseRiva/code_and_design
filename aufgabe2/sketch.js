@@ -1,137 +1,102 @@
-/*let posX = 0;
-let posY = 0;
-
-let threshold = 400;
-
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-
-}
-
-function draw() {
-  background(220, 50);
-
-  if (posX < threshold) {
-    //farbe vor der Position 400
-
-    fill(178, 212, 178)
-  } else {
-    //farbe nach der Postition 400
-    fill(255, 182, 193)
-  }
-
-
-//Zufallswert für Y position 
-//frameCount
-
-if(frameCount% 10 == 0 ){
-
- posY = random(-100, 100)
-}
-
-
-
-
-
-  rect(posX, height / 2 + posY, 50, 50);
-
-  // posX = posX +1; 
-
-  /*
-  
-  exakt gleich         posX==350
-  kleiner als          posX < 350
-  grösser als          posX > 350
-  kleiner oder gleich  posX <= 350 (wahr, falls posX 350 ist)
-  grösser oder gleich  posX >= 350
-  ungleich             posX != 350 (trifft immer zu, ausser posX hat den WErt von 350)
-  
-  
-  */
-
-/*
-
-  if (posX < windowWidth - 50) {
-    //falls die Bedingung zutrifft
-
-    posX = posX + 5; //posX++
-  }
-
-}
-*/
-
-let posX = 0;
-let posY = 0;
-let heartbeat = true; // solange true → Herz schlägt
-let linePoints = []; // speichert die Spur
+let points = [];
 let baseY;
-let gridSpacing = 40; // Abstand der Linien
+let heartbeat = true;
+let speed = 4;
+let gridOffset = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   baseY = height / 2;
   strokeWeight(1);
+  textAlign(CENTER, CENTER);
 }
 
 function draw() {
-  // Hintergrund (schwarz) und Raster zeichnen
   background(0);
-  drawGrid();
 
-  // Herzschlag, falls aktiv
+  // --- bewegendes Raster ---
+  drawMovingGrid();
+
+  // --- neuen Punkt für die Linie berechnen ---
+  let y;
   if (heartbeat) {
-    // Puls simulieren
-    let t = frameCount * 0.05;
-    let pulse = sin(t) * 50; // Grundschwingung
-    if (frameCount % 120 < 5) {
-      // kurzer "Peak" alle ~2 Sekunden
-      pulse -= random(150, 200);
-    }
-    posY = baseY + pulse;
+    // typisches Herzschlagmuster
+    let phase = frameCount % 60;
+
+    if (phase < 5) y = baseY - 190;        // steiler Peak
+    else if (phase < 15) y = baseY + 100;   // tiefer Abfall
+    else if (phase < 30) y = baseY - 80;   // kleine Erholung
+    else y = baseY + random(-2, 2);        // Grundlinie mit leichtem Zittern
+  } else {
+    y = baseY; // Flatline
   }
 
-  // Neuen Punkt hinzufügen
-  linePoints.push({ x: posX, y: posY });
-  if (linePoints.length > width) {
-    linePoints.shift(); // alte Punkte entfernen
+  // Punkte verschieben und neuen hinzufügen
+  points.push(y);
+  if (points.length > width / speed + 2) {
+    points.shift();
   }
 
-  // Spur zeichnen (weiße Linie)
-  noFill();
+  // --- Linie zeichnen ---
   stroke(255);
+  noFill();
   beginShape();
-  for (let p of linePoints) {
-    vertex(p.x, p.y);
+  for (let i = 0; i < points.length; i++) {
+    let x = i * speed;
+    vertex(x, points[i]);
   }
   endShape();
 
-  // Ball zeichnen
-  fill(255);
-  noStroke();
-  ellipse(posX, posY, 12, 12);
+  // --- Herzanzeige oben rechts ---
+  push();
+  translate(width - 100, 100); // obere rechte Ecke
 
-  // Bewegung nach rechts
-  posX += 4;
-  if (posX > width) {
-    posX = 0;
-    linePoints = [];
+  if (heartbeat) {
+    // ❤️ pulsierendes Herz, im Beat der Linie
+    let beat = (frameCount % 60 < 6) ? 1.3 : 1.0; // pulsiert im Rhythmus der Linie
+    scale(beat);
+    noStroke();
+    fill(255, 0, 80);
+    let r = 5;
+    beginShape();
+    for (let a = 0; a < TWO_PI; a += 0.1) {
+      const x = r * 16 * pow(sin(a), 3);
+      const y = -r * (13 * cos(a) - 5 * cos(2 * a) - 2 * cos(3 * a) - cos(4 * a));
+      vertex(x, y);
+    }
+    endShape(CLOSE);
+  } else {
+    // 🟢 Maus gedrückt → DEAD
+    fill(0, 255, 0);
+    noStroke();
+    textSize(48);
+    text("DEAD", 0, 0);
   }
+  pop();
 }
 
-// Mausclick → Flatline (Herz hört auf)
+// Mausclick → Flatline solange gedrückt
 function mousePressed() {
-  heartbeat = !heartbeat;
+  heartbeat = false;
 }
 
-// Rasterfunktion
-function drawGrid() {
+function mouseReleased() {
+  heartbeat = true;
+}
+
+// --- Funktion für bewegendes Raster ---
+function drawMovingGrid() {
   stroke(80);
   strokeWeight(0.5);
+  gridOffset -= speed / 2; // Bewegungsgeschwindigkeit des Rasters
 
-  for (let x = 0; x < width; x += gridSpacing) {
+  let spacing = 40;
+  let offsetX = gridOffset % spacing;
+
+  for (let x = offsetX; x < width; x += spacing) {
     line(x, 0, x, height);
   }
-  for (let y = 0; y < height; y += gridSpacing) {
+  for (let y = 0; y < height; y += spacing) {
     line(0, y, width, y);
   }
 }
