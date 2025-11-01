@@ -10,7 +10,7 @@ function draw() {
   stroke(255);
 
  
-  let i = 0;
+  //let i = 0;
 
   //Studiere mal den Code ab hier. Welche Blöcke wiederholen sich?
   //Welche Werte verändern sich?
