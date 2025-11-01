@@ -36,27 +36,40 @@ function draw() {
   //Farben der Formen definieren
   let blau = color(0, 200, 255);
   let pink = color(230, 0, 130);
+  //eine Laufvariable für die Schleife
+  let i = 0;
 
 
   //Formen in wechselnder Farbe gelistet
   fill(blau);
-  rect(width / 2, height / 2, 300, 300, radius);
+  stroke(0);
+  for (let i = 0; i < 20; i++) {
+    let faktor = 20 - i;
+    if (i % 2 == 0) {fill(blau);}
+    else {fill(pink);}  
+    rect(width / 2 + abstandX * i, height / 2 + abstandY * i, faktor * 50, faktor * 50, radius);
+  }
 
-  fill(pink);
-  rect(width / 2 + abstandX * 1, height / 2 + abstandY * 1, 250, 250, radius);
+  /*fill(pink);
+  rect(width / 2 + abstandX * 1, height / 2 + abstandY * 1, 5 * 50, 5 * 50, radius);
+
 
   fill(blau);
-  rect(width / 2 + abstandX * 2, height / 2 + abstandY * 2, 200, 200, radius);
+  rect(width / 2 + abstandX * 2, height / 2 + abstandY * 2, 4 * 50, 4 * 50, radius);
+
 
   fill(pink);
-  rect(width / 2 + abstandX * 3, height / 2 + abstandY * 3, 150, 150, radius);
+  rect(width / 2 + abstandX * 3, height / 2 + abstandY * 3, 3 * 50, 3 * 50, radius);
+
 
   fill(blau);
-  rect(width / 2 + abstandX * 4, height / 2 + abstandY * 4, 100, 100, radius);
+  rect(width / 2 + abstandX * 4, height / 2 + abstandY * 4, 2 * 50, 2 * 50, radius);
+
 
   fill(pink);
-  rect(width / 2 + abstandX * 5, height / 2 + abstandY * 5, 50, 50, radius);
+  rect(width / 2 + abstandX * 5, height / 2 + abstandY * 5, 1 * 50, 1 * 50, radius);
 
+*/ 
   //Beschriftungen der Slider
   if (grau < 128) {
     fill(255); // heller Text auf dunklem Hintergrund
