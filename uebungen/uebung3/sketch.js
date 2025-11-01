@@ -101,7 +101,7 @@ function drawMovingGrid() {
   }
 }
 */
-/*
+
 let offset = 0; //für die Bewegung des Grids
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -119,8 +119,9 @@ function draw() {
  
 
 
-}*/
+}
 
+/*
 let board;  
 let ball;   
 let pivot;  
@@ -226,3 +227,4 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
+*/
