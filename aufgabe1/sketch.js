@@ -1,4 +1,3 @@
-// Globale Variable für den Slider
 let beziehungsSlider;
 
 function setup() {
