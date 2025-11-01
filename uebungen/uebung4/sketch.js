@@ -28,7 +28,7 @@ push(); //rechtseck links
 //Koordinatensystem verschieben
 translate(width/2 - 200, height/2);
 
-//rotieren
+//hier rotation gegenuhrzeigersinn
 rotate(-drehWinkel);
 
 fill(178, 212, 178)
