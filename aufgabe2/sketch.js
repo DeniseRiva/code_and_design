@@ -19,25 +19,26 @@ function draw() {
 
   // --- neuen Punkt für die Linie berechnen ---
   let y;
-  if (heartbeat) {
+ if (heartbeat) {
     // typisches Herzschlagmuster
     let phase = frameCount % 60;
 
-    if (phase < 5) y = baseY - 190;        // steiler Peak
-    else if (phase < 15) y = baseY + 100;   // tiefer Abfall
-    else if (phase < 30) y = baseY - 80;   // kleine Erholung
+    if (phase < 2) y = baseY - 190;        // steiler Peak
+    else if (phase < 5) y = baseY + 100;   // tiefer Abfall
+    else if (phase < 7) y = baseY - 100;   // kleine Erholung
     else y = baseY + random(-2, 2);        // Grundlinie mit leichtem Zittern
   } else {
     y = baseY; // Flatline
   }
+    
 
-  // Punkte verschieben und neuen hinzufügen
+ // Punkte verschieben und neuen hinzufügen
   points.push(y);
   if (points.length > width / speed + 2) {
     points.shift();
   }
 
-  // --- Linie zeichnen ---
+  // Linie zeichnen 
   stroke(255);
   noFill();
   beginShape();
@@ -47,12 +48,12 @@ function draw() {
   }
   endShape();
 
-  // --- Herzanzeige oben rechts ---
+  //  Herzanzeige oben rechts 
   push();
   translate(width - 100, 100); // obere rechte Ecke
 
   if (heartbeat) {
-    // ❤️ pulsierendes Herz, im Beat der Linie
+    //  pulsierendes Herz, im Beat der Linie
     let beat = (frameCount % 60 < 6) ? 1.3 : 1.0; // pulsiert im Rhythmus der Linie
     scale(beat);
     noStroke();
@@ -66,7 +67,7 @@ function draw() {
     }
     endShape(CLOSE);
   } else {
-    // 🟢 Maus gedrückt → DEAD
+    // Maus gedrückt → DEAD
     fill(0, 255, 0);
     noStroke();
     textSize(48);
@@ -84,7 +85,7 @@ function mouseReleased() {
   heartbeat = true;
 }
 
-// --- Funktion für bewegendes Raster ---
+//  Funktion für bewegendes Raster
 function drawMovingGrid() {
   stroke(80);
   strokeWeight(0.5);

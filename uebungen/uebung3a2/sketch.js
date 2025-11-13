@@ -105,19 +105,33 @@ function drawMovingGrid() {
 let offset = 0; //für die Bewegung des Grids
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
-
-strokeWeight(1);
-
+  //ein grid erstellen mit linien im hintergrund, dass sich bewegt und man sieht
+  stroke(80);
 }
 
 function draw() {
   background(0);
-  //bewegendes Grid erstellen
-  drawMovingGrid();
-  offset += 2;
- 
+  stroke(255);
+  noFill();
 
+  // grid erstellen, welches sich nach links bewegt
+  offset -= 2;
+  let spacing = 40;
+  let offsetX = offset % spacing;
+
+  for (let x = offsetX; x < width; x += spacing) {
+    line(x, 0, x, height);
+  }
+  for (let y = 0; y < height; y += spacing) {
+    line(0, y, width, y);
+  }
+  //elipse farbe geben
+  fill(0, 200, 0);
+  noStroke();
+  ellipse(width / 2, height / 2, 20);
+if (mouseIsPressed) {
+    PosY =  (windowHeight / 2) + sin(frameCount * 0.1) * 100;
+  }
 
 }
 
